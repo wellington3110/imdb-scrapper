@@ -6,8 +6,8 @@ import java.io.*;
 
 public class JsonArrayBufferedWriter {
 
-    private Gson gson;
-    private BufferedWriter bw;
+    private final Gson gson;
+    private final BufferedWriter bw;
     private boolean first = true;
 
     private JsonArrayBufferedWriter(Gson gson, BufferedWriter bw) {

@@ -9,11 +9,11 @@ import org.jsoup.select.Elements;
 import java.util.Iterator;
 import java.util.Optional;
 
-public class ImdbResultSearchPage implements Iterable<Document> {
+public class ImdbSearchPageResults implements Iterable<Document> {
 
     private final Document document;
 
-    public ImdbResultSearchPage(Document document) {
+    public ImdbSearchPageResults(Document document) {
         this.document = document;
     }
 

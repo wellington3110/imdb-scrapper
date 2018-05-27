@@ -2,27 +2,37 @@ package json;
 
 import com.google.gson.Gson;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
+import java.io.*;
 
-public class JsonBufferedWriter {
+public class JsonArrayBufferedWriter {
 
     private Gson gson;
     private BufferedWriter bw;
     private boolean first = true;
 
-    public JsonBufferedWriter(Gson gson, BufferedWriter bw) {
+    private JsonArrayBufferedWriter(Gson gson, BufferedWriter bw) {
 
         this.gson = gson;
         this.bw = bw;
         this.openArray();
     }
 
-    public void openArray() {
+
+
+    public static JsonArrayBufferedWriter from(Gson gson, String path) {
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(new File(path)));
+            return new JsonArrayBufferedWriter(gson, bw);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void openArray() {
         this.writeWithBw("[");
     }
 
-    public void closeArray() {
+    private void closeArray() {
         this.writeWithBw("]");
     }
 

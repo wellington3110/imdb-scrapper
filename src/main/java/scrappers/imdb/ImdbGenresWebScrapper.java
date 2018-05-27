@@ -1,8 +1,8 @@
-package scrappers;
+package scrappers.imdb;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import json.JsonBufferedWriter;
+import json.JsonArrayBufferedWriter;
 import search.configurator.SearchPageConfigurator;
 import search.form.ImdbFilterByAscTitleRating;
 import search.form.ImdbFilterByGenre;
@@ -13,10 +13,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import search.configurator.ImdbSearchPageConfigurator;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.IOException;
-import java.io.FileWriter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,9 +34,9 @@ public class ImdbGenresWebScrapper {
         document =  JsoupHelper.getDocument(SEARCH_PAGE_URL);
 
         List<SearchPageConfiguratorAndWriter> searchPagesAndWriters = document.getElementsByAttributeValueContaining("id", "genres")
-                .parallelStream()
-                .map(this::newSearchPageConfiguratorAndWriter)
-                .collect(Collectors.toList());
+                                                                              .parallelStream()
+                                                                              .map(this::newSearchPageConfiguratorAndJsonArrayWriter)
+                                                                              .collect(Collectors.toList());
 
         searchPagesAndWriters
                 .parallelStream()
@@ -51,21 +47,16 @@ public class ImdbGenresWebScrapper {
 
     }
 
-    private SearchPageConfiguratorAndWriter newSearchPageConfiguratorAndWriter(Element element) {
-        return new SearchPageConfiguratorAndWriter(newJsonBuferredWritter(element), newSearchPageExecutor(element));
+    private SearchPageConfiguratorAndWriter newSearchPageConfiguratorAndJsonArrayWriter(Element element) {
+        return new SearchPageConfiguratorAndWriter(newJsonArrayBuferredWritter(element), newSearchPageExecutor(element));
     }
 
-    private JsonBufferedWriter newJsonBuferredWritter(Element element) {
-        File file = new File(getFilePath(element));
-        try {
-            return new JsonBufferedWriter(gson, new BufferedWriter(new FileWriter(file)));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    private JsonArrayBufferedWriter newJsonArrayBuferredWritter(Element element) {
+        return JsonArrayBufferedWriter.from(gson, getFilePath(element));
     }
 
     private String getFilePath(Element element) {
-        return path + "/" + element.attr("value");
+        return path + "/" + element.attr("value") + ".json";
     }
 
     private SearchPageConfigurator<Document> newSearchPageExecutor(Element element) {
@@ -78,10 +69,10 @@ public class ImdbGenresWebScrapper {
 
     public static class SearchPageConfiguratorAndWriter {
 
-        private final JsonBufferedWriter jsonWritter;
+        private final JsonArrayBufferedWriter jsonWritter;
         private final SearchPageConfigurator<Document> configurator;
 
-        public SearchPageConfiguratorAndWriter(JsonBufferedWriter json, SearchPageConfigurator<Document> configurator) {
+        public SearchPageConfiguratorAndWriter(JsonArrayBufferedWriter json, SearchPageConfigurator<Document> configurator) {
             this.jsonWritter = json;
             this.configurator = configurator;
         }

@@ -1,10 +1,10 @@
-import scrappers.imdb.ImdbGenresWebScrapper;
+import scrapers.imdb.ImdbGenresWebScraper;
 
 public class main {
 
     public static void main(String[] args) {
         try {
-            new ImdbGenresWebScrapper("/home/wellington/result").scrapper();
+            new ImdbGenresWebScraper("/home/wellington/result").scrapper();
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }

@@ -1,7 +1,7 @@
 package search.parser;
 
 import org.jsoup.nodes.Document;
-import scrappers.imdb.model.ImdbTitle;
+import scrapers.imdb.model.ImdbTitle;
 import search.configurator.SearchPageConfigurator;
 
 import java.util.function.Consumer;

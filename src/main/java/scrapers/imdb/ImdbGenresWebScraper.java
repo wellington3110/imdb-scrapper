@@ -1,4 +1,4 @@
-package scrappers.imdb;
+package scrapers.imdb;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -16,16 +16,16 @@ import search.configurator.ImdbSearchPageConfigurator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ImdbGenresWebScrapper {
+public class ImdbGenresWebScraper {
 
     private Document document;
     private String path = "";
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final String SEARCH_PAGE_URL = "https://www.imdb.com/search/title";
 
-    public ImdbGenresWebScrapper() {}
+    public ImdbGenresWebScraper() {}
 
-    public ImdbGenresWebScrapper(String path) {
+    public ImdbGenresWebScraper(String path) {
         this.path = path;
     }
 

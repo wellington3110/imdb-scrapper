@@ -40,7 +40,7 @@ public class JsonArrayBufferedWriter {
         try {
             bw.write(text);
         } catch (IOException e) {
-            this.close();
+            this.closeBw();
         }
     }
 
@@ -55,11 +55,16 @@ public class JsonArrayBufferedWriter {
     }
 
     public void close() {
+        this.closeArray();
+        closeBw();
+
+    }
+
+    private void closeBw() {
         try {
-            this.closeArray();
-            bw.close();
+            this.bw.close();
         } catch (IOException e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
 }

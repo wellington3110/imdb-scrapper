@@ -56,7 +56,7 @@ public class JsonArrayBufferedWriter {
 
     public void close() {
         this.closeArray();
-        closeBw();
+        this.closeBw();
 
     }
 

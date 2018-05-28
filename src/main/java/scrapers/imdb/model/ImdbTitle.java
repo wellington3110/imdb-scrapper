@@ -14,8 +14,8 @@ public class ImdbTitle {
     private Double rating;
     private Integer totalVotes;
 
-    private String year;
-    private String titleDescription;
+    private String yearDescription;
+    private String title;
     private String description;
 
     private List<String> genres;
@@ -26,8 +26,8 @@ public class ImdbTitle {
 
             rating = extractRating(titleElement);
             totalVotes = extractTotalVotes(titleElement);
-            year = extractYear(titleElement);
-            titleDescription = extractTitle(titleElement);
+            yearDescription = extractYear(titleElement);
+            title = extractTitle(titleElement);
             description = extractDescription(titleElement);
             genres = extractGenres(titleElement);
 
@@ -49,7 +49,7 @@ public class ImdbTitle {
     }
 
     private String extractYear(Element titleElement) {
-        return titleElement.getElementsByClass("lister-item-year").text();
+        return titleElement.getElementsByClass("lister-item-yearDescription").text();
     }
 
     private String extractDescription(Element titleElement) {
@@ -84,12 +84,12 @@ public class ImdbTitle {
         return totalVotes;
     }
 
-    public String getYear() {
-        return year;
+    public String getYearDescription() {
+        return yearDescription;
     }
 
-    public String getTitleDescription() {
-        return titleDescription;
+    public String getTitle() {
+        return title;
     }
 
     public String getDescription() {

@@ -1,7 +1,6 @@
 package search.configurator;
 
 import org.jsoup.Connection;
-import search.configurator.ConnectionConfigurator;
 
 public class ImdbSearchPageConnectionConfigurator implements ConnectionConfigurator {
 

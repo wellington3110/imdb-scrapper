@@ -77,9 +77,11 @@ public class ImdbSearchPageResults implements Iterable<Document> {
             return nextPage(catchNextHref());
         }
 
+
+
         private Document nextPage(Elements caughtNextHref) {
             String URL = Optional.ofNullable(caughtNextHref.first())
-                    .orElseThrow(ArrayIndexOutOfBoundsException::new)
+                    .orElseThrow(() -> new RuntimeException("Error to acess next page of search"))
                     .attr("abs:href");
 
             return JsoupHelper.getDocument(connectionConfigurator.configure(Jsoup.connect(URL)));

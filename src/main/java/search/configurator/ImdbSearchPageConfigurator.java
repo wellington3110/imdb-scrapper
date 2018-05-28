@@ -1,7 +1,6 @@
 package search.configurator;
 
 import search.form.FormModifierInput;
-import consts.ImdbJsoupConsts;
 import helpers.JsoupHelper;
 import search.exceptions.WasNotFoundSubmitOfSearch;
 import org.jsoup.nodes.Document;
@@ -16,13 +15,15 @@ import java.util.stream.Collectors;
 public class ImdbSearchPageConfigurator implements SearchPageConfigurator<Document> {
 
     private final Document document;
+    private final ConnectionConfigurator connectionConfigurator;
     private final List<FormModifierInput> modifierInputs = new ArrayList<>();
     public static final String SELECT_FORM = "[action=/search/title]";
 
 
-    public ImdbSearchPageConfigurator(String searchPageUrl) {
+    public ImdbSearchPageConfigurator(String searchPageUrl, ConnectionConfigurator connectionConfigurator) {
 
         this.document = JsoupHelper.getDocument(searchPageUrl);
+        this.connectionConfigurator = connectionConfigurator;
     }
 
     @Override
@@ -36,9 +37,9 @@ public class ImdbSearchPageConfigurator implements SearchPageConfigurator<Docume
                                               .orElseThrow(WasNotFoundSubmitOfSearch::new);
 
             justLeaveModifierInputs(formElement);
-            Document searchResult = formElement.submit().maxBodySize(ImdbJsoupConsts.MAX_BODY).get();
+            Document searchResult = connectionConfigurator.configure(formElement.submit()).get();
 
-            return new ImdbSearchPageResults(searchResult);
+            return new ImdbSearchPageResults(searchResult, connectionConfigurator);
 
         } catch (IOException e) {
             throw new RuntimeException(e);

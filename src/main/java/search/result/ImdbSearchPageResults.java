@@ -1,10 +1,10 @@
 package search.result;
 
-import consts.ImdbJsoupConsts;
 import helpers.JsoupHelper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import search.configurator.ConnectionConfigurator;
 
 import java.util.Iterator;
 import java.util.Optional;
@@ -12,29 +12,33 @@ import java.util.Optional;
 public class ImdbSearchPageResults implements Iterable<Document> {
 
     private final Document document;
+    private ConnectionConfigurator connectionConfigurator;
 
-    public ImdbSearchPageResults(Document document) {
+    public ImdbSearchPageResults(Document document, ConnectionConfigurator connectionConfigurator) {
         this.document = document;
+        this.connectionConfigurator = connectionConfigurator;
     }
 
     @Override
     public Iterator<Document> iterator() {
-        return new ImdbResultSearchPageIterator(document);
+        return new ImdbResultSearchPageIterator(document, connectionConfigurator);
     }
 
     public static class ImdbResultSearchPageIterator implements Iterator<Document> {
 
         private Elements nextHrefCaught;
         private final Document document;
+        private final ConnectionConfigurator connectionConfigurator;
 
         private boolean isFirstIteration = true;
         private boolean wasCaughtNextHrefInThisPage = false;
 
         public static final String NEXT_HREF_SEARCH_PAGE_CLASS = "lister-page-next";
 
-        public ImdbResultSearchPageIterator(Document document) {
+        public ImdbResultSearchPageIterator(Document document, ConnectionConfigurator connectionConfigurator) {
             this.document = document;
 
+            this.connectionConfigurator = connectionConfigurator;
         }
 
         @Override
@@ -78,7 +82,7 @@ public class ImdbSearchPageResults implements Iterable<Document> {
                     .orElseThrow(ArrayIndexOutOfBoundsException::new)
                     .attr("abs:href");
 
-            return JsoupHelper.getDocument(Jsoup.connect(URL).maxBodySize(ImdbJsoupConsts.MAX_BODY));
+            return JsoupHelper.getDocument(connectionConfigurator.configure(Jsoup.connect(URL)));
 
         }
     }

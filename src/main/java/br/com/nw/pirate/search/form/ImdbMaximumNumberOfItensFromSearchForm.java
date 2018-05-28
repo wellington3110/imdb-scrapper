@@ -1,6 +1,6 @@
-package search.form;
+package br.com.nw.pirate.search.form;
 
-import search.exceptions.WasNotFoundMaxOfPageOption;
+import br.com.nw.pirate.search.exceptions.WasNotFoundMaxOfPageOption;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 

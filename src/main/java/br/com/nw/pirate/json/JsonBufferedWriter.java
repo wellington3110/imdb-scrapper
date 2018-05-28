@@ -1,4 +1,4 @@
-package json;
+package br.com.nw.pirate.json;
 
 import com.google.gson.Gson;
 

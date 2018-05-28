@@ -1,4 +1,4 @@
-package search.configurator;
+package br.com.nw.pirate.connection;
 
 import org.jsoup.Connection;
 

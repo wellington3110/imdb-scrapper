@@ -1,19 +1,19 @@
-package scrapers.imdb;
+package br.com.nw.pirate.scrapers.imdb;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import json.JsonBufferedWriter;
-import search.configurator.ConnectionConfigurator;
-import search.configurator.ImdbSearchPageConnectionConfigurator;
-import search.configurator.SearchPageConfigurator;
-import search.form.ImdbFilterByAscTitleRating;
-import search.form.ImdbFilterByGenre;
-import search.form.ImdbMaximumNumberOfItensFromSearchForm;
-import search.parser.ImdbSearchPageResultsParser;
-import helpers.JsoupHelper;
+import br.com.nw.pirate.json.JsonBufferedWriter;
+import br.com.nw.pirate.connection.ConnectionConfigurator;
+import br.com.nw.pirate.connection.ImdbSearchPageConnectionConfigurator;
+import br.com.nw.pirate.search.configurator.SearchPageConfigurator;
+import br.com.nw.pirate.search.form.ImdbFilterByAscTitleRating;
+import br.com.nw.pirate.search.form.ImdbFilterByGenre;
+import br.com.nw.pirate.search.form.ImdbMaximumNumberOfItensFromSearchForm;
+import br.com.nw.pirate.search.parser.ImdbSearchPageResultsParser;
+import br.com.nw.pirate.helpers.JsoupHelper;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import search.configurator.ImdbSearchPageConfigurator;
+import br.com.nw.pirate.search.configurator.ImdbSearchPageConfigurator;
 
 import java.util.List;
 import java.util.stream.Collectors;

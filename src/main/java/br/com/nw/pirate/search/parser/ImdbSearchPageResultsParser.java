@@ -1,8 +1,8 @@
-package search.parser;
+package br.com.nw.pirate.search.parser;
 
+import br.com.nw.pirate.scrapers.imdb.model.ImdbTitle;
+import br.com.nw.pirate.search.configurator.SearchPageConfigurator;
 import org.jsoup.nodes.Document;
-import scrapers.imdb.model.ImdbTitle;
-import search.configurator.SearchPageConfigurator;
 
 import java.util.function.Consumer;
 

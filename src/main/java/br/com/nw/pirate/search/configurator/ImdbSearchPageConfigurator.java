@@ -1,11 +1,12 @@
-package search.configurator;
+package br.com.nw.pirate.search.configurator;
 
-import search.form.FormModifierInput;
-import helpers.JsoupHelper;
-import search.exceptions.WasNotFoundSubmitOfSearch;
+import br.com.nw.pirate.connection.ConnectionConfigurator;
+import br.com.nw.pirate.helpers.JsoupHelper;
+import br.com.nw.pirate.search.form.FormModifierInput;
+import br.com.nw.pirate.search.exceptions.WasNotFoundSubmitOfSearch;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.FormElement;
-import search.result.ImdbSearchPageResults;
+import br.com.nw.pirate.search.result.ImdbSearchPageResults;
 
 import java.io.IOException;
 import java.util.ArrayList;

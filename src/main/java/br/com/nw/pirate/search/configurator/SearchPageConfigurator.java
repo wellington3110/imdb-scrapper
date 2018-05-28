@@ -1,6 +1,6 @@
-package search.configurator;
+package br.com.nw.pirate.search.configurator;
 
-import search.form.FormModifierInput;
+import br.com.nw.pirate.search.form.FormModifierInput;
 
 public interface SearchPageConfigurator<T> {
 

@@ -1,10 +1,10 @@
-package search.result;
+package br.com.nw.pirate.search.result;
 
-import helpers.JsoupHelper;
+import br.com.nw.pirate.helpers.JsoupHelper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import search.configurator.ConnectionConfigurator;
+import br.com.nw.pirate.connection.ConnectionConfigurator;
 
 import java.util.Iterator;
 import java.util.Optional;

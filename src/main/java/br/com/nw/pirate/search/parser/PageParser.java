@@ -1,4 +1,4 @@
-package search.parser;
+package br.com.nw.pirate.search.parser;
 
 import java.util.function.Consumer;
 

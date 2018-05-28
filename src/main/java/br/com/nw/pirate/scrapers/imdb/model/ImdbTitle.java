@@ -1,4 +1,4 @@
-package scrapers.imdb.model;
+package br.com.nw.pirate.scrapers.imdb.model;
 
 
 import org.jsoup.nodes.Element;

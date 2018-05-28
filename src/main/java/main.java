@@ -1,4 +1,4 @@
-import scrapers.imdb.ImdbGenresWebScraper;
+import br.com.nw.pirate.scrapers.imdb.ImdbGenresWebScraper;
 
 public class main {
 

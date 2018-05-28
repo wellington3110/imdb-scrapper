@@ -1,4 +1,4 @@
-package search.form;
+package br.com.nw.pirate.search.form;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

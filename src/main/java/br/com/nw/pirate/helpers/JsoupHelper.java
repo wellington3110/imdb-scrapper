@@ -1,4 +1,4 @@
-package helpers;
+package br.com.nw.pirate.helpers;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;

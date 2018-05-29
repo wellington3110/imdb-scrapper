@@ -1,19 +1,20 @@
 package br.com.nw.pirate.scrapers.imdb;
 
+import br.com.nw.pirate.consts.ImdbConsts;
+import br.com.nw.pirate.search.form.*;
+import br.com.nw.pirate.search.result.ImdbSearchPageResultManipulator;
+import br.com.nw.pirate.search.result.SearchPageResultManipulator;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import br.com.nw.pirate.json.JsonBufferedWriter;
 import br.com.nw.pirate.connection.ConnectionConfigurator;
 import br.com.nw.pirate.connection.ImdbSearchPageConnectionConfigurator;
 import br.com.nw.pirate.search.configurator.SearchPageConfigurator;
-import br.com.nw.pirate.search.form.ImdbFilterByAscTitleRating;
-import br.com.nw.pirate.search.form.ImdbFilterByGenre;
-import br.com.nw.pirate.search.form.ImdbMaximumNumberOfItensFromSearchForm;
 import br.com.nw.pirate.search.parser.ImdbSearchPageResultsParser;
-import br.com.nw.pirate.helpers.JsoupHelper;
+import br.com.nw.pirate.helper.JsoupHelper;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import br.com.nw.pirate.search.configurator.ImdbSearchPageConfigurator;
+import br.com.nw.pirate.search.configurator.SearchPageConfiguratorDefault;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,11 +23,13 @@ public class ImdbGenresWebScraper {
 
     private Document document;
     private String path = "";
-    private Gson gson = new GsonBuilder().create();
-    private final String SEARCH_PAGE_URL = "https://www.imdb.com/search/title";
+    private final Gson gson = new GsonBuilder().disableHtmlEscaping().create();
     private final ConnectionConfigurator connectionConfigurator = new ImdbSearchPageConnectionConfigurator();
+    private final SearchPageResultManipulator searchPageResultManipulator = new ImdbSearchPageResultManipulator();
 
-    public ImdbGenresWebScraper() {}
+    public ImdbGenresWebScraper() {
+
+    }
 
     public ImdbGenresWebScraper(String path) {
         this.path = path;
@@ -34,7 +37,7 @@ public class ImdbGenresWebScraper {
 
     public void scrapper() {
 
-        document =  JsoupHelper.getDocument(SEARCH_PAGE_URL);
+        document =  JsoupHelper.getDocument(ImdbConsts.SEARCH_PAGE_URL);
 
         List<SearchPageConfiguratorAndWriter> searchPagesAndWriters = document.getElementsByAttributeValueContaining("id", "genres")
                                                                               .parallelStream()
@@ -63,12 +66,11 @@ public class ImdbGenresWebScraper {
     }
 
     private SearchPageConfigurator<Document> newSearchPageExecutor(Element element) {
-        return new ImdbSearchPageConfigurator(SEARCH_PAGE_URL, connectionConfigurator).applyFormModifier(new ImdbMaximumNumberOfItensFromSearchForm())
-                                                          .applyFormModifier(new ImdbFilterByGenre(JsoupHelper.getAttrId(element)))
-                                                          .applyFormModifier(new ImdbFilterByAscTitleRating());
+        return new SearchPageConfiguratorDefault(new ImdbFormPageManipulator(), connectionConfigurator, searchPageResultManipulator).addFormModifier(new ImdbMaximumNumberOfItensFromSearchForm())
+                                                                                                  .addFormModifier(new ImdbFilterByGenre(JsoupHelper.getAttrId(element)))
+                                                                                                  .addFormModifier(new ImdbFilterByAscTitleRating());
+
     }
-
-
 
     public static class SearchPageConfiguratorAndWriter {
 
@@ -80,6 +82,13 @@ public class ImdbGenresWebScraper {
             this.configurator = configurator;
         }
 
+        public JsonBufferedWriter getJsonWritter() {
+            return jsonWritter;
+        }
+
+        public SearchPageConfigurator<Document> getConfigurator() {
+            return configurator;
+        }
     }
 
 }

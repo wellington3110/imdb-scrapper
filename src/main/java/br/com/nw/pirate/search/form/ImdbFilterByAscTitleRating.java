@@ -6,29 +6,28 @@ import org.jsoup.nodes.Element;
 public class ImdbFilterByAscTitleRating implements FormModifierInput {
 
 
-
     @Override
-    public void apply(Document document) {
+    public void apply(Element element) {
 
-        getFilterByAscTitleRatingElement(document)
+        getFilterByAscTitleRatingElement(element)
                 .children()
                 .stream()
-                .forEach(element -> {
-                    if (isAscRatingOption(element)) {
-                        element.attr("selected", true);
+                .forEach(e -> {
+                    if (isAscRatingOption(e)) {
+                        e.attr("selected", true);
                     } else {
-                        element.attr("selected", false);
+                        e.attr("selected", false);
                     }
                 });
     }
 
     @Override
-    public Element selectInput(Document document) {
-        return getFilterByAscTitleRatingElement(document);
+    public Element selectInput(Element element) {
+        return getFilterByAscTitleRatingElement(element);
     }
 
-    private Element getFilterByAscTitleRatingElement(Document document) {
-        return document.getElementsByAttributeValue("name", "sort")
+    private Element getFilterByAscTitleRatingElement(Element element) {
+        return element.getElementsByAttributeValue("name", "sort")
                 .first();
     }
 

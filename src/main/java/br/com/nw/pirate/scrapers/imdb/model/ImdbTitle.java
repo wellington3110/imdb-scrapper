@@ -1,6 +1,7 @@
 package br.com.nw.pirate.scrapers.imdb.model;
 
 
+import br.com.nw.pirate.consts.ImdbConsts;
 import org.jsoup.nodes.Element;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,7 +11,6 @@ import java.util.stream.Collectors;
 
 public class ImdbTitle {
 
-    public static final String NO_DESCRIPTION = "add a plot";
     private Double rating;
     private Integer totalVotes;
 
@@ -55,7 +55,7 @@ public class ImdbTitle {
     private String extractDescription(Element titleElement) {
         return Optional.of(titleElement.select(".lister-item-content > .text-muted")
                 .last().text())
-                .map(description -> description.toLowerCase().equals(NO_DESCRIPTION) ? "" : description)
+                .map(description -> description.toLowerCase().equals(ImdbConsts.TITLE_NO_DESCRIPTION) ? "" : description)
                 .orElse("");
     }
 

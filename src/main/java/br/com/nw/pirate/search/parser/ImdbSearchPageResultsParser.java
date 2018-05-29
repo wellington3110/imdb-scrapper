@@ -1,5 +1,6 @@
 package br.com.nw.pirate.search.parser;
 
+import br.com.nw.pirate.consts.ImdbConsts;
 import br.com.nw.pirate.scrapers.imdb.model.ImdbTitle;
 import br.com.nw.pirate.search.configurator.SearchPageConfigurator;
 import org.jsoup.nodes.Document;
@@ -11,8 +12,7 @@ public class ImdbSearchPageResultsParser implements PageParser<ImdbTitle> {
     private int iterations = 0;
     private final SearchPageConfigurator<Document> configurator;
 
-    public static final int MAX_OF_TITLE = 500;
-    public static final String LISTER_FILTER_CLASS = "lister-item";
+    private final int maxOfTitle = 500;
 
 
     public ImdbSearchPageResultsParser(SearchPageConfigurator<Document> configurator) {
@@ -26,7 +26,7 @@ public class ImdbSearchPageResultsParser implements PageParser<ImdbTitle> {
         Iterable<Document> search = configurator.search();
 
         for (Document document: search) {
-            document.getElementsByClass(LISTER_FILTER_CLASS).stream()
+            document.getElementsByClass(ImdbConsts.LISTER_FILTER_CLASS).stream()
                     .limit(maxOfIterations())
                     .forEach(titleElement -> {
                         iterations ++;
@@ -42,11 +42,11 @@ public class ImdbSearchPageResultsParser implements PageParser<ImdbTitle> {
     }
 
     private boolean hasMaxOfTitles() {
-        return iterations == MAX_OF_TITLE;
+        return iterations == maxOfTitle;
     }
 
     private long maxOfIterations() {
-        return MAX_OF_TITLE - iterations;
+        return maxOfTitle - iterations;
     }
 
 }

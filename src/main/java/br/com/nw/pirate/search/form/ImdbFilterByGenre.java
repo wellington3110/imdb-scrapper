@@ -12,12 +12,12 @@ public class ImdbFilterByGenre implements FormModifierInput {
     }
 
     @Override
-    public void apply(Document document) {
-        document.getElementById(genreElementId).attr("checked", true);
+    public void apply(Element element) {
+        element.getElementById(genreElementId).attr("checked", true);
     }
 
     @Override
-    public Element selectInput(Document document) {
-        return document.getElementById(genreElementId);
+    public Element selectInput(Element element) {
+        return element.getElementById(genreElementId);
     }
 }

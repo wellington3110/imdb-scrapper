@@ -1,16 +1,14 @@
 package br.com.nw.pirate.search.form;
 
+import br.com.nw.pirate.consts.ImdbConsts;
 import br.com.nw.pirate.search.exceptions.WasNotFoundMaxOfPageOption;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 public class ImdbMaximumNumberOfItensFromSearchForm implements FormModifierInput {
 
-    public static final String SEARCH_COUNT_ID = "search-count";
-
     @Override
-    public void apply(Document document) {
-        document.getElementById(SEARCH_COUNT_ID)
+    public void apply(Element document) {
+        document.getElementById(ImdbConsts.SEARCH_COUNT_ID)
                 .children()
                 .stream()
                 .max(this::maxValue)
@@ -19,8 +17,8 @@ public class ImdbMaximumNumberOfItensFromSearchForm implements FormModifierInput
     }
 
     @Override
-    public Element selectInput(Document document) {
-        return document.getElementById(SEARCH_COUNT_ID);
+    public Element selectInput(Element document) {
+        return document.getElementById(ImdbConsts.SEARCH_COUNT_ID);
     }
 
     private int maxValue(Element e1, Element e2) {

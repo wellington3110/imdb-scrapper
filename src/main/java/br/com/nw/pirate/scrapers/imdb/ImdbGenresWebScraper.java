@@ -1,12 +1,15 @@
 package br.com.nw.pirate.scrapers.imdb;
 
 import br.com.nw.pirate.consts.ImdbConsts;
-import br.com.nw.pirate.search.form.*;
+import br.com.nw.pirate.search.url.UrlParameter;
+import br.com.nw.pirate.search.url.ImdbAscTitleRatingParameter;
+import br.com.nw.pirate.search.url.ParametersFromElement;
+import br.com.nw.pirate.search.url.ImdbMaximumNumberOfItensFromSearchFormAttrParameter;
 import br.com.nw.pirate.search.result.ImdbSearchPageResultManipulator;
 import br.com.nw.pirate.search.result.SearchPageResultManipulator;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import br.com.nw.pirate.json.JsonBufferedWriter;
+import br.com.nw.pirate.json.JsonlBufferedWriter;
 import br.com.nw.pirate.connection.ConnectionConfigurator;
 import br.com.nw.pirate.connection.ImdbSearchPageConnectionConfigurator;
 import br.com.nw.pirate.search.configurator.SearchPageConfigurator;
@@ -16,6 +19,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import br.com.nw.pirate.search.configurator.SearchPageConfiguratorDefault;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,9 +27,12 @@ public class ImdbGenresWebScraper {
 
     private Document document;
     private String path = "";
+
     private final Gson gson = new GsonBuilder().disableHtmlEscaping().create();
     private final ConnectionConfigurator connectionConfigurator = new ImdbSearchPageConnectionConfigurator();
     private final SearchPageResultManipulator searchPageResultManipulator = new ImdbSearchPageResultManipulator();
+
+    private final List<UrlParameter> parameters = Arrays.asList(new ImdbMaximumNumberOfItensFromSearchFormAttrParameter(), new ImdbAscTitleRatingParameter());
 
     public ImdbGenresWebScraper() {
 
@@ -57,8 +64,8 @@ public class ImdbGenresWebScraper {
         return new SearchPageConfiguratorAndWriter(newJsonBuferredWritter(element), newSearchPageExecutor(element));
     }
 
-    private JsonBufferedWriter newJsonBuferredWritter(Element element) {
-        return JsonBufferedWriter.from(gson, getFilePath(element));
+    private JsonlBufferedWriter newJsonBuferredWritter(Element element) {
+        return JsonlBufferedWriter.from(gson, getFilePath(element));
     }
 
     private String getFilePath(Element element) {
@@ -66,23 +73,23 @@ public class ImdbGenresWebScraper {
     }
 
     private SearchPageConfigurator<Document> newSearchPageExecutor(Element element) {
-        return new SearchPageConfiguratorDefault(new ImdbFormPageManipulator(), connectionConfigurator, searchPageResultManipulator).addFormModifier(new ImdbMaximumNumberOfItensFromSearchForm())
-                                                                                                  .addFormModifier(new ImdbFilterByGenre(JsoupHelper.getAttrId(element)))
-                                                                                                  .addFormModifier(new ImdbFilterByAscTitleRating());
+
+        return new SearchPageConfiguratorDefault(connectionConfigurator, searchPageResultManipulator).addFormAttrValue(parameters)
+                                                                                                     .addFormAttrValue(new ParametersFromElement(element));
 
     }
 
     public static class SearchPageConfiguratorAndWriter {
 
-        private final JsonBufferedWriter jsonWritter;
+        private final JsonlBufferedWriter jsonWritter;
         private final SearchPageConfigurator<Document> configurator;
 
-        public SearchPageConfiguratorAndWriter(JsonBufferedWriter json, SearchPageConfigurator<Document> configurator) {
+        public SearchPageConfiguratorAndWriter(JsonlBufferedWriter json, SearchPageConfigurator<Document> configurator) {
             this.jsonWritter = json;
             this.configurator = configurator;
         }
 
-        public JsonBufferedWriter getJsonWritter() {
+        public JsonlBufferedWriter getJsonWritter() {
             return jsonWritter;
         }
 

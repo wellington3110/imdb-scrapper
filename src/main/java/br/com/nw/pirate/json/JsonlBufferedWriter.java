@@ -8,21 +8,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 
-public class JsonBufferedWriter {
+public class JsonlBufferedWriter {
 
     private final Gson gson;
     private final BufferedWriter bw;
 
-    private JsonBufferedWriter(Gson gson, BufferedWriter bw) {
+    private JsonlBufferedWriter(Gson gson, BufferedWriter bw) {
 
         this.gson = gson;
         this.bw = bw;
     }
 
-    public static JsonBufferedWriter from(Gson gson, String path) {
+    public static JsonlBufferedWriter from(Gson gson, String path) {
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(new File(path)));
-            return new JsonBufferedWriter(gson, bw);
+            return new JsonlBufferedWriter(gson, bw);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -41,7 +41,8 @@ public class JsonBufferedWriter {
     }
 
     public void write(Object obj) {
-        this.writeWithBw(this.gson.toJson(obj));
+        String json = this.gson.toJson(obj);
+        this.writeWithBw(json);
 
     }
 

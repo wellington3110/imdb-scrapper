@@ -1,7 +1,7 @@
-package br.com.nw.pirate.search.form;
+package br.com.nw.pirate.search.url;
 
 
-public class ImdbFilterByAscTitleRating implements FormAttrValue {
+public class ImdbAscTitleRatingParameter implements UrlParameter {
 
     private final String name = "sort";
     private final String value = "user_rating,asc";

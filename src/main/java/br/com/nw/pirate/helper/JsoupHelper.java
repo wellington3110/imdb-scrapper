@@ -4,13 +4,8 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.FormElement;
-import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class JsoupHelper {
 
     /*just to not handle exception*/
@@ -31,23 +26,19 @@ public class JsoupHelper {
         return element.attr("name");
     }
 
-    public static void removeInputsFromFormDataExceptWithName(List<String> names, FormElement formElement) {
-
-        List<Connection.KeyVal> inputsWillBeRemoved = formElement
-                .formData()
-                .stream()
-                .filter(keyVal -> !names.contains(keyVal.key()))
-                .collect(Collectors.toList());
-
-        Elements elementsFromForm = formElement.elements();
-
-        inputsWillBeRemoved.forEach(keyVal -> formElement.select("[name=" + keyVal.key() + "]")
-                                                         .forEach(e -> elementsFromForm.remove(e)));
-
-
-    }
-
     public static String getAttrId(Element element) {
         return element.attr("id");
+    }
+
+    public static Document post(Connection connection) {
+        try {
+            return connection.post();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String getAttrValue(Element element) {
+        return element.attr("value");
     }
 }

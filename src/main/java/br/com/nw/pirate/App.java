@@ -1,6 +1,8 @@
+package br.com.nw.pirate;
+
 import br.com.nw.pirate.scrapers.imdb.ImdbGenresWebScraper;
 
-public class main {
+public class App {
 
     public static void main(String[] args) {
         System.out.println("Starting...");
@@ -15,6 +17,6 @@ public class main {
     }
 
     private static String getPath(String[] args) {
-        return args.length > 0 ? args[0] : "";
+        return args.length > 0 ? args[0] : "./";
     }
 }

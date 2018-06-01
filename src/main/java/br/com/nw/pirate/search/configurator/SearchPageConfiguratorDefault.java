@@ -2,60 +2,54 @@ package br.com.nw.pirate.search.configurator;
 
 import br.com.nw.pirate.connection.ConnectionConfigurator;
 import br.com.nw.pirate.helper.JsoupHelper;
-import br.com.nw.pirate.search.form.FormModifierInput;
-import br.com.nw.pirate.search.form.FormPageManipulator;
+import br.com.nw.pirate.search.url.UrlParameter;
 import br.com.nw.pirate.search.result.SearchPageResultManipulator;
 import org.jsoup.Connection;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.FormElement;
 import br.com.nw.pirate.search.result.SearchPageResults;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SearchPageConfiguratorDefault implements SearchPageConfigurator<Document> {
 
-    private final List<FormModifierInput> modifierInputs = new ArrayList<>();
-    private final FormPageManipulator formPageManipulator;
+    private final List<UrlParameter> parameters = new ArrayList<>();
     private final ConnectionConfigurator connectionConfigurator;
     private SearchPageResultManipulator searchPageResultManipulator;
 
 
-    public SearchPageConfiguratorDefault(FormPageManipulator formPageManipulator, ConnectionConfigurator connectionConfigurator, SearchPageResultManipulator searchPageResultManipulator) {
-
-        this.formPageManipulator = formPageManipulator;
+    public SearchPageConfiguratorDefault(ConnectionConfigurator connectionConfigurator, SearchPageResultManipulator searchPageResultManipulator) {
         this.connectionConfigurator = connectionConfigurator;
         this.searchPageResultManipulator = searchPageResultManipulator;
     }
 
     @Override
-    public Iterable<Document> search() {
+    public Iterable<Document> search(String uri) {
 
-        FormElement formElement = formPageManipulator.getForm();
-        modifierInputs.forEach(formModifierInput -> formModifierInput.apply(formElement));
+        Connection connection = connectionConfigurator.configure(Jsoup.connect(uri));
+        setFormValues(connection);
 
-        justLeaveModifierInputs(formElement);
-
-        Connection connection = formPageManipulator.submit(formElement);
-        Document searchResult = JsoupHelper.getDocument(connectionConfigurator.configure(connection));
+        Document searchResult = JsoupHelper.post(connection);
 
         return new SearchPageResults(searchResult, connectionConfigurator, searchPageResultManipulator);
 
     }
 
-    private void justLeaveModifierInputs(FormElement formElement) {
-        List<String> names = modifierInputs.stream()
-                                            .map(input -> JsoupHelper.getAttrName(input.selectInput(formElement)))
-                                            .collect(Collectors.toList());
-        
-        JsoupHelper.removeInputsFromFormDataExceptWithName(names, formElement);
+    private void setFormValues(Connection connection) {
+        parameters.forEach(attr -> connection.data(attr.getName(), attr.getValue()));
     }
 
     @Override
-    public SearchPageConfigurator<Document> addFormModifier(FormModifierInput inputModifier) {
-        modifierInputs.add(inputModifier);
+    public SearchPageConfigurator<Document> addFormAttrValue(UrlParameter parameter) {
+        parameters.add(parameter);
         return this;
     }
-    
+
+    @Override
+    public SearchPageConfigurator<Document> addFormAttrValue(List<UrlParameter> parameters) {
+        this.parameters.addAll(parameters);
+        return this;
+    }
+
 }

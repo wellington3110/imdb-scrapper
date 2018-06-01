@@ -6,6 +6,6 @@ public class ImdbSearchPageConnectionConfigurator implements ConnectionConfigura
 
     @Override
     public Connection configure(Connection connection) {
-        return connection.maxBodySize(5_000_000).timeout(30_0000);
+        return connection.maxBodySize(5_000_000).timeout(20_000);
     }
 }

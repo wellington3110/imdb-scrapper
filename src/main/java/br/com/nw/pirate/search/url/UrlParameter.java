@@ -1,6 +1,6 @@
-package br.com.nw.pirate.search.form;
+package br.com.nw.pirate.search.url;
 
-public interface FormAttrValue {
+public interface UrlParameter {
 
     String getName();
     String getValue();

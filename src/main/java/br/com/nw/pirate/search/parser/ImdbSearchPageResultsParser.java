@@ -23,7 +23,7 @@ public class ImdbSearchPageResultsParser implements PageParser<ImdbTitle> {
     @Override
     public void parser(Consumer<ImdbTitle> callback) {
 
-        Iterable<Document> search = configurator.search();
+        Iterable<Document> search = configurator.search(ImdbConsts.SEARCH_PAGE_URL);
 
         for (Document document: search) {
             document.getElementsByClass(ImdbConsts.LISTER_FILTER_CLASS).stream()

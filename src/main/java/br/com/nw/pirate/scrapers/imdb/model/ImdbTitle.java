@@ -11,13 +11,11 @@ import java.util.stream.Collectors;
 
 public class ImdbTitle {
 
+    private String title;
     private Double rating;
     private Integer totalVotes;
-
     private String yearDescription;
-    private String title;
     private String description;
-
     private List<String> genres;
 
     public ImdbTitle(Element titleElement) {
@@ -38,25 +36,27 @@ public class ImdbTitle {
     }
 
     private List<String> extractGenres(Element titleElement) {
-        return Arrays.asList( titleElement.getElementsByClass("genre").text().split(","))
+        return Arrays.asList( titleElement.getElementsByClass(
+                "genre").text().split(","))
                      .stream()
                      .map(String::trim)
                      .collect(Collectors.toList());
     }
 
     private String extractTitle(Element titleElement) {
-        return titleElement.getElementsByClass("lister-item-header").first().getElementsByTag("a").text();
+        return titleElement.getElementsByClass("lister-item-header").first().getElementsByTag("a").text().trim();
     }
 
     private String extractYear(Element titleElement) {
-        return titleElement.getElementsByClass("lister-item-yearDescription").text();
+        return titleElement.getElementsByClass("lister-item-year").text().trim();
     }
 
     private String extractDescription(Element titleElement) {
         return Optional.of(titleElement.select(".lister-item-content > .text-muted")
                 .last().text())
                 .map(description -> description.toLowerCase().equals(ImdbConsts.TITLE_NO_DESCRIPTION) ? "" : description)
-                .orElse("");
+                .orElse("")
+                .trim();
     }
 
     private Double extractRating(Element titleElement) {

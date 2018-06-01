@@ -1,6 +1,6 @@
-package br.com.nw.pirate.search.form;
+package br.com.nw.pirate.search.url;
 
-public class ImdbMaximumNumberOfItensFromSearchFormAttr implements FormAttrValue {
+public class ImdbMaximumNumberOfItensFromSearchFormAttrParameter implements UrlParameter {
 
     private final String name = "count";
     private final String value = "250";
